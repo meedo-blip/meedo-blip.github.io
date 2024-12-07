@@ -2,8 +2,6 @@
 
 // Initialize
 
-import keyDownKey from 'keydown-key';
-
 const boardLen = 9; // Odd number only, checker pattern only fulfills if boardLen is an odd number
 const gameBoard = document.getElementById("gameboard");
 const snakeBoard = document.getElementById("snakeboard");
