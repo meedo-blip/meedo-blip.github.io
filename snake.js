@@ -125,7 +125,7 @@ function makeSoundPlayers() {
 
 function addEventListeners() {
     // Keyboard event listener
-    document.addEventListener("keydown", e => { // if key pressed
+    window.addEventListener("keydown", e => { // if key pressed
 
         if(!playing) {
             start();
@@ -153,7 +153,7 @@ function addEventListeners() {
             
     })
 
-    document.addEventListener("keyup", e => { // if key is released
+    window.addEventListener("keyup", e => { // if key is released
         if(e.code == "ArrowUp") upBtn.setAttribute("style","background-color: #f0f0f0;");
         else if(e.code == "ArrowLeft") leftBtn.setAttribute("style","background-color: #f0f0f0;");
         else if(e.code == "ArrowDown") downBtn.setAttribute("style","background-color: #f0f0f0;");
