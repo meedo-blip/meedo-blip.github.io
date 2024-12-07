@@ -225,7 +225,6 @@ function start() {
     makeApple();
 
     playing = true;
-
     myInterval = setInterval(move, myIntervalSpeed);
 }
 
