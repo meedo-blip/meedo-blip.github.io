@@ -195,7 +195,7 @@ let posRotate = [];
 let apple;
 let playing = false;
 let step;
-let score = 0;
+let score;
 let highscore = 0;
 let madeApple = false;
 let victory = false;
@@ -224,6 +224,7 @@ function start() {
 
     makeApple();
 
+    score = 0;
     playing = true;
     myInterval = setInterval(move, myIntervalSpeed);
 }
