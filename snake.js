@@ -92,13 +92,6 @@ function makeMenu(start) {
 
     document.getElementById("startbtn").addEventListener("click", () => {
         alignSnake();
-        
-        const text = document.createElement("h2");
-
-        text.setAttribute("id","reminder");
-        text.appendChild(document.createTextNode('Press any key or button to start the game.'));
-
-        snakeBoard.appendChild(text);
         document.getElementById("cover").remove();
     });
 }   
@@ -176,15 +169,19 @@ function addEventListeners() {
 
     upBtn.addEventListener("mousedown", () => {
         newDirection = "N";
+        if(!playing) start();
     })
     leftBtn.addEventListener("mousedown", () => {
         newDirection = "W";
+        if(!playing) start();
     }) 
     downBtn.addEventListener("mousedown", () => {
         newDirection = "S";
+        if(!playing) start();
     }) 
     rightBtn.addEventListener("mousedown", () => {
         newDirection = "E";
+        if(!playing) start();
     })
 
 }
