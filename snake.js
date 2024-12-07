@@ -2,6 +2,8 @@
 
 // Initialize
 
+import keyDownKey from 'keydown-key';
+
 const boardLen = 9; // Odd number only, checker pattern only fulfills if boardLen is an odd number
 const gameBoard = document.getElementById("gameboard");
 const snakeBoard = document.getElementById("snakeboard");
@@ -125,12 +127,14 @@ function makeSoundPlayers() {
 
 function addEventListeners() {
     // Keyboard event listener
-    window.addEventListener("keydown", e => { // if key pressed
+    let key = event.key;
+    let e = key;
 
+    if(key != e){
         if(!playing) {
             start();
         }
-
+    
         if(e.code == "ArrowUp"){
             upBtn.setAttribute("style","background-color: #fbfb3c;");
             newDirection = "N";
@@ -140,20 +144,20 @@ function addEventListeners() {
             leftBtn.setAttribute("style","background-color: #fbfb3c;");
             newDirection = "W";
         }
-
+    
         else if(e.code == "ArrowDown"){
             downBtn.setAttribute("style","background-color: #fbfb3c;");
             newDirection = "S";
         }  
-
+    
         else if(e.code == "ArrowRight"){
             rightBtn.setAttribute("style","background-color: #fbfb3c;");
             newDirection = "E";
         }
             
-    })
+    }
 
-    window.addEventListener("keyup", e => { // if key is released
+    document.addEventListener("keyup", e => { // if key is released
         if(e.code == "ArrowUp") upBtn.setAttribute("style","background-color: #f0f0f0;");
         else if(e.code == "ArrowLeft") leftBtn.setAttribute("style","background-color: #f0f0f0;");
         else if(e.code == "ArrowDown") downBtn.setAttribute("style","background-color: #f0f0f0;");
