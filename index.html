@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <style>
+        html, body{
+            height: 100%;
+        }
+
+        body{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+            background-image: url(images/wood-texture.jpg);
+        }
+
+        #header, #loseheader, #winheader{
+            display: flex;
+            align-items: center;
+        }
+
+        #header{
+            background-color: #72563a;
+            border-radius: 3vh;
+            padding: 5vh;
+        }
+
+        #loseheader, #winheader{
+            background: linear-gradient(to top left, #66ffcc 0%, #ffcc99 100%);
+            border-radius: 5vh;
+            padding: 5vh;
+        }
+
+        #winheader{
+            flex-direction: column;
+            justify-content: space-evenly;
+            
+        }
+
+        h1, h2, h4{
+            color: white;
+        }
+
+        h1, h4, #reminder{
+            text-align: center;
+        }
+
+        h4{
+            max-width: 23vh;
+        }
+
+        label{
+            color:#f7f5f5;
+        }
+
+        option {
+            background-color: #3d3d3d;
+        }
+
+        #select{
+            height: 5vh;
+            width: 15vh;
+            border-radius: 5vh;
+            background-color:#3d3d3d;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .emoji{
+            height:5rem;
+        }
+
+        #cover{
+            display: flex;
+            width:100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            z-index: 2;
+            background-color:rgba(0,0,0,0.5);
+            opacity: 1;
+            animation: appear 1s ease-in-out forwards;
+        }
+
+        @keyframes appear {
+            0% {
+                opacity: 0;
+            }
+            100%{
+                opacity: 1;
+            }
+        }
+
+        #menu{
+            display: flex;
+            flex-direction: column;
+            height: 55vh;
+            width: 39vh;
+            border-radius: 10vh;
+            background-color: #72563a;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+        
+        #difficulty{
+            display: flex;
+            flex-direction:column;
+        }
+
+        #startbtn{
+            display:flex;
+            background-color: #f5d109;
+            width: 15vh;
+            height: 5vh;
+            border-radius: 5vh;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #startbtntext{
+            font-size: 1.7rem; 
+            color: white;
+        }
+
+        #reminder {
+            position: absolute;
+            -webkit-text-stroke: 1px #3d3d3d; 
+            font-size: 2rem; 
+            font-weight: 700;
+            color: #fefcff;
+        }
+
+        #scores{
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            background-color: #6dad4f;
+            width: 31vh;
+            height: 9vh; 
+            padding-right: 1vh;
+            padding-left: 1vh;
+            border-radius: 15vh;
+        }
+
+        #trophy{
+            width: 7vh;
+            height: 7vh;
+        }
+
+        #boards{
+            display: flex;
+            width: 49vh;
+            height: 49vh;
+            border-radius: 3vh;
+            background-color: #72563a;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #gameboard, #snakeboard{
+            width: 42vh;
+            height: 42vh;
+        }
+
+        #gameboard{
+            display: grid;
+        }
+
+        #snakeboard{
+            display: flex;
+            position: absolute;
+            z-index: 1;
+        }
+
+        #snakehead, .snakebody,#snakeback{
+            display: flex;
+            position: absolute;
+            height: 11.12%;
+            width: 11.12%;
+            background-color: aqua;
+        }
+
+        #snakehead{
+            border-top-right-radius: 3vh;
+            border-bottom-right-radius: 3vh;
+            justify-content: space-evenly;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        #snakeback{
+            border-bottom-left-radius: 3vh;
+            border-top-left-radius: 3vh;
+        }
+
+        .eyes{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 2vh;
+            width: 2vh;
+            background-color: aliceblue;
+            border-radius: 50%;
+        }
+
+        .pupil{
+            height: 1vh;
+            width: 1vh;
+            border-radius: 50%;
+            background-color: black;
+        }
+
+        .px:nth-child(odd){
+            background-color:#fee8b9;
+        }
+        .px:nth-child(even){
+            background-color:#6dad4f;
+        }
+
+        #buttons{
+            display: grid;
+            height: 20vh;
+            width: 30vh;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            grid-gap: 2vh;
+        }    
+        
+        #up, #down, #right, #left{
+            font-size: 5vh;
+            border-radius: 2vh;
+            cursor: pointer;
+        }
+
+        .apple{
+            display: flex;
+            justify-content: center;
+        }
+        .apple.start{
+            height: 7vh; 
+            width: 7vh;
+        }
+        .apple.game{
+            height: 100%;
+            width: 100%;
+        }
+
+        .stem, .fruit{
+            position: absolute;
+        }
+
+        .stem{
+            background-color: #362511;
+            border-top-left-radius: 50%;
+            border-top-right-radius: 50%;
+            border-bottom-left-radius: 21%;
+            border-bottom-right-radius: 21%;
+        }
+        .stem.start{
+            width: 1.261vh;
+            height: 1.892vh;
+            margin-top: 0.7vh;
+        }
+
+        .stem.game {
+            width: 0.946vh;
+            height: 1.419vh;
+            margin-top: 0.525vh;
+        }
+
+        .fruit{
+            display: flex;
+            background-color: #A91B0D;
+            border-radius: 40%;
+        }
+        .fruit.start{
+            margin-top: 2.0214vh;
+            width: 3.783vh;
+            height: 3.783vh;
+        }
+        .fruit.game {
+            margin-top: 1.515vh;
+            width: 2.837vh;
+            height: 2.837vh;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="header">
+        <h1>Snake Game</h1>
+        <img class="emoji" src="images/snake.png">
+    </div>
+
+    <div id="boards">
+        <div id="gameboard"></div>
+        <div id="snakeboard"></div>
+    </div>
+
+    <div id="buttons">
+        <div></div>
+        <button id="up">↑</button>
+        <div></div>
+        <button id="left">←</button>
+        <button id="down">↓</button>
+        <button id="right">→</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+
+    <script src="snake.js"></script>
+</body>
+</html>
