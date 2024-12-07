@@ -127,10 +127,10 @@ function makeSoundPlayers() {
 
 function addEventListeners() {
     // Keyboard event listener
-    let key = event.key;
-    let e = key;
-
+    
     document.addEventListener("keydown", function(e){
+        console.log("hi");
+        
         if(!playing) {
             start();
         }
