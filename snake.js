@@ -37,7 +37,7 @@ function buildPixels() {
 
 function makeSnake() {
 
-    snakeBoard.innerHTML = "<div id='snakehead'><div class='eyes'><div class='pupil'></div></div><div class='eyes'><div class='pupil'></div></div></div>";
+    snakeBoard.innerHTML += "<div id='snakehead'><div class='eyes'><div class='pupil'></div></div><div class='eyes'><div class='pupil'></div></div></div>";
 
     pixelWidth = snakeBoard.offsetHeight / boardLen;
     snakeHeight = document.getElementById("snakehead").offsetHeight;
@@ -200,6 +200,7 @@ let highscore = 0;
 let madeApple = false;
 let victory = false;
 let surpassCount;
+let startCount = 0;
 
 let soundFiles = [
     "sounds/food-crunch.wav",
@@ -218,7 +219,9 @@ function initialize() {
 }
 
 function start() {
-    document.getElementById("reminder").remove();
+    if(startCount == 0) snakeBoard.removeChild(document.getElementById("reminder"));
+    startCount++;
+
     makeApple();
 
     playing = true;
