@@ -130,7 +130,7 @@ function addEventListeners() {
     let key = event.key;
     let e = key;
 
-    if(key != e){
+    document.addEventListener("keydown", function(e){
         if(!playing) {
             start();
         }
@@ -155,7 +155,7 @@ function addEventListeners() {
             newDirection = "E";
         }
             
-    }
+    })
 
     document.addEventListener("keyup", e => { // if key is released
         if(e.code == "ArrowUp") upBtn.setAttribute("style","background-color: #f0f0f0;");
