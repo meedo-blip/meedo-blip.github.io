@@ -195,7 +195,7 @@ let posRotate = [];
 let apple;
 let playing = false;
 let step;
-let score;
+let score = 0;
 let highscore = 0;
 let madeApple = false;
 let victory = false;
