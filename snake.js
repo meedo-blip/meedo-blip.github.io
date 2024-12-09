@@ -7,6 +7,11 @@ const gameBoard = document.getElementById("gameboard");
 const snakeBoard = document.getElementById("snakeboard");
 const snakeLen = Math.floor(boardLen / 2);
 
+const upBtn = document.getElementById("up");
+const leftBtn = document.getElementById("left");
+const downBtn = document.getElementById("down");
+const rightBtn = document.getElementById("right");
+
 let pixelWidth;
 let snakeHeight;
 let snake = [];
@@ -73,8 +78,10 @@ function alignSnake() {
 }
 
 function makeMenu(start) {
+    canPlay = false;
+
     const cover = document.createElement("div");
-    cover.setAttribute("id","cover")
+    cover.setAttribute("id","cover");
 
     document.body.insertBefore(cover, document.getElementById("buttons").nextSibling);
 
@@ -92,8 +99,12 @@ function makeMenu(start) {
 
     document.getElementById("startbtn").addEventListener("click", () => {
         alignSnake();
-        document.getElementById("cover").remove();
-    });
+        addEventListeners();
+
+        canPlay = true;
+        document.body.removeChild(document.getElementById("cover"));
+    }); 
+    
 }   
 
 function updateSelection(change) {
@@ -127,9 +138,8 @@ function addEventListeners() {
     // Keyboard event listener
     
     document.addEventListener("keydown", function(e){
-        console.log("hi");
         
-        if(!playing) {
+        if(canPlay) {
             start();
         }
     
@@ -164,26 +174,21 @@ function addEventListeners() {
 
     // listen to the buttons being clicked
 
-    const upBtn = document.getElementById("up")
-    const leftBtn = document.getElementById("left")
-    const downBtn = document.getElementById("down")
-    const rightBtn = document.getElementById("right")
-
     upBtn.addEventListener("mousedown", () => {
         newDirection = "N";
-        if(!playing) start();
+        if(canPlay) start();
     })
     leftBtn.addEventListener("mousedown", () => {
         newDirection = "W";
-        if(!playing) start();
+        if(canPlay) start();
     }) 
     downBtn.addEventListener("mousedown", () => {
         newDirection = "S";
-        if(!playing) start();
+        if(canPlay) start();
     }) 
     rightBtn.addEventListener("mousedown", () => {
         newDirection = "E";
-        if(!playing) start();
+        if(canPlay) start();
     })
 
 }
@@ -193,7 +198,7 @@ let myInterval;
 let myIntervalSpeed = 25;
 let posRotate = [];
 let apple;
-let playing = false;
+let canPlay = false;
 let step;
 let score = 0;
 let highscore = 0;
@@ -225,7 +230,7 @@ function start() {
     makeApple();
 
     score = 0;
-    playing = true;
+    canPlay = false;
     myInterval = setInterval(move, myIntervalSpeed);
 }
 
@@ -234,7 +239,7 @@ function move() {
     const x = Math.floor(snake[0].left / pixelWidth) + 1;
     const y = Math.floor(snake[0].top / pixelWidth) + 1;
 
-    if(x > boardLen + 1 || y > boardLen || x < 0 || y < 0) {
+    if(x > boardLen + 1 || y > boardLen + 1 || x < 0 || y < 0) {
         stop();
         return; 
     }
@@ -438,7 +443,6 @@ function makeApple() {
 function stop() {
     clearInterval(myInterval);
 
-    playing = false;
     surpassCount = score - highscore;
 
     if(surpassCount < 0) surpassCount = 0;
@@ -460,4 +464,3 @@ function stop() {
 
 // Initial start functions
 initialize();
-addEventListeners();
