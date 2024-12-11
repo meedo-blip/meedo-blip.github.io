@@ -22,7 +22,7 @@ class snakePart {
         this.top;
         this.left;
         this.x = snakeLen - index;
-        this.y = 5;
+        this.y = 4;
         this.direction = "E";
         this.rotating = false;
         this.newDirection = "E";
@@ -54,7 +54,9 @@ function makeSnake() {
     snakeBoard.innerHTML += "<div id='snakeback'></div>";
 
     snake.push(new snakePart(0, "snakehead"));
+
     for(i=0; i < snakeLen - 2; i++) snake.push(new snakePart(i+1, "snakebody" + i));
+
     snake.push(new snakePart(snakeLen - 1, "snakeback"));
 
     console.log("hi people");
@@ -68,13 +70,17 @@ function alignSnake() {
         snake[i].left = pixelWidth*(snakeLen-1) - (pixelWidth*i);
         snake[i].element.style.left = snake[i].left + "px";
 
+        snake[i].x = snakeLen - i;
+        snake[i].y = 4;
+
         snake[i].angle = 0;
         snake[i].element.style.rotate = "0deg";
 
         snake[i].direction = snake[i].newDirection = newDirection = "E";
         snake[i].rotating = false;
-        posRotate = [];
     }
+
+    posRotate = [];
 }
 
 function makeMenu(start) {
@@ -206,6 +212,7 @@ let madeApple = false;
 let victory = false;
 let surpassCount;
 let startCount = 0;
+let tickCount = 0;
 
 let soundFiles = [
     "sounds/food-crunch.wav",
@@ -236,27 +243,47 @@ function start() {
 
 function move() {
 
-    const x = Math.floor(snake[0].left / pixelWidth) + 1;
-    const y = Math.floor(snake[0].top / pixelWidth) + 1;
+    const x = (snake[0].left / pixelWidth) + 1;
+    const y = (snake[0].top / pixelWidth) + 1;
 
-    if(x > boardLen + 1 || y > boardLen + 1 || x < 0 || y < 0) {
+    const s = Math.round(step / pixelWidth * 100) / 100;
+
+    if(x > boardLen + 1|| y > boardLen + 1 || x < 0 || y < 0) {
         stop();
         return; 
     }
-    if(x != snake[0].x || y != snake[0].y) {
-        
+
+
+    if(Math.floor(x) != Math.floor(snake[0].x) || Math.floor(y) != Math.floor(snake[0].y)) {
+
         for(i=0; i<snake.length; i++){
             snake[i].x = x-i;
             snake[i].y = y-i;
         }
-
+    
         checkPos();
+    } else {
+        for(i=0; i<snake.length; i++){
+            snake[i].x = x-i;
+            snake[i].y = y-i;
+        }
+    }
+
+    if(tickCount == 5) {
+        if(checkCollision(apple.x, apple.y)) {
+            score++;
+            apple.element.innerHTML = '';
+    
+            soundFiles[0].play();
+            makeApple();
+        }
+
+        tickCount = 0;
     }
 
     for(i=0; i<posRotate.length; i++) {
         for(j=0; j<snake.length; j++){
             if(posRotate[i][0] == j) {
-                console.log("hi")
                 snake[j].rotating = true;
                 rotate(j, i);
                 break;
@@ -289,6 +316,7 @@ function move() {
         
     }
 
+    tickCount++;
 }
 
 function rotate(part, rotation) {
@@ -370,10 +398,10 @@ function rotate(part, rotation) {
         snake[part].rotating = false;
 
         snake[part].top = toNearest(snake[part].top, pixelWidth);
-        snake[part].y = (snake[part].top / pixelWidth) + 1;
+        snake[part].y = snake[part].top / pixelWidth;
 
         snake[part].left = toNearest(snake[part].left, pixelWidth);
-        snake[part].x = (snake[part].left / pixelWidth) + 1;
+        snake[part].x = snake[part].left / pixelWidth;
 
         snake[part].angle = toNearest(snake[part].angle, 90);
         
@@ -395,13 +423,16 @@ function checkPos() {
         posRotate.push([0, {clock:0 , newDirection: snake[0].newDirection}]);
     }
 
-    if(snake[0].x == apple.x && snake[0].y == apple.y || (snake[0].x == apple.x && snake[0].y - 1 == apple.y) || (snake[0].x - 1 == apple.x && snake[0].y == apple.y) || (snake[0].x + 1 == apple.x && snake[0].y == apple.y) || (snake[0].x == apple.x && snake[0].y + 1 == apple.y)){ // eat apple
-        score++;
-        apple.element.innerHTML = '';
+}
 
-        soundFiles[0].play();
-        makeApple();
-    }
+function checkCollision(x,y) {
+    const s = 1 - (step/pixelWidth);
+
+    if(snake[0].x >= x - 1 && snake[0].x <= x && snake[0].y >= y - 1 && snake[0].y < y) return true;
+    else if(snake[0].x - s > x - 1 && snake[0].x - s < x && snake[0].y > y - 1 && snake[0].y < y) return true;
+    else if(snake[0].x > x - 1 && snake[0].x < x && snake[0].y - s > y - 1 && snake[0].y - s < y) return true;
+    else if(snake[0].x - s > x - 1 && snake[0].x - s < x && snake[0].y - s > y - 1 && snake[0].y - s < y) return true;
+    else return false;
 }
 
 function toNearest(angle, denom) {
@@ -421,7 +452,7 @@ function makeApple() {
 
     if(madeApple) apple.element.innerHTML = '';
 
-    apple = {element: pixel, x: pos - (Math.floor(pos / boardLen) * boardLen) + 1, y: Math.floor(pos / boardLen) + 1};
+    apple = {element: pixel, x: pos - (Math.floor(pos / boardLen) * boardLen) + 1, y: (Math.floor(pos / boardLen)) + 1};
 
     let remakeApple = false;
 
@@ -449,16 +480,15 @@ function stop() {
 
     highscore += surpassCount;
 
-    if(surpassCount >= 5){
+    if(surpassCount >= 1){
         victory = true;
         soundFiles[2].play();
     } 
-    else if(surpassCount < 5) {
+    else {
         victory = false;
         soundFiles[1].play();
-    } 
-    else victory = false;
-
+    }
+    
     makeMenu(false);
 }
 
