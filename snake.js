@@ -133,6 +133,7 @@ function makeSoundPlayers() {
         audio.style.display = "none";
     
         audio.setAttribute("src", soundFiles[i]);
+        audio.volume = 0.5;
 
         document.body.appendChild(audio);
         soundFiles[i] = audio;
