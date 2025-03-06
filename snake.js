@@ -453,7 +453,7 @@ function makeApple() {
 
     if(madeApple) apple.element.innerHTML = '';
 
-    apple = {element: pixel, x: pos - (Math.floor(pos / boardLen) * boardLen) + 1, y: (Math.floor(pos / boardLen)) + 1};
+    apple = {element: pixel, x: pos - toNearest(pos, boardLen) + 1, y: (Math.floor(pos / boardLen)) + 1};
 
     let remakeApple = false;
 
