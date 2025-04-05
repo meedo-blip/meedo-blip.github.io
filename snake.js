@@ -55,7 +55,8 @@ function makeSnake() {
 
     snake.push(new snakePart(0, "snakehead"));
 
-    for(i=0; i < snakeLen - 2; i++) snake.push(new snakePart(i+1, "snakebody" + i));
+    for(i=0; i < snakeLen - 2; i++) 
+        snake.push(new snakePart(i+1, "snakebody" + i));
 
     snake.push(new snakePart(snakeLen - 1, "snakeback"));
 
@@ -212,6 +213,7 @@ let highscore = 0;
 let madeApple = false;
 let victory = false;
 let surpassCount;
+
 let startCount = 0;
 let tickCount = 0;
 
@@ -224,6 +226,13 @@ let soundFiles = [
 const angleStep = 90 / 25; 
 
 function initialize() {
+    highscore = parseInt(localStorage.getItem("highscore"))
+
+    if(!Number.isSafeInteger(highscore)) {
+        highscore = 0
+        localStorage.setItem("highscore", highscore + "")
+    }
+
     buildPixels();
     makeSnake();
     alignSnake();
@@ -475,15 +484,14 @@ function makeApple() {
 function stop() {
     clearInterval(myInterval);
 
-    surpassCount = score - highscore;
-
-    if(surpassCount < 0) surpassCount = 0;
-
-    highscore += surpassCount;
-
-    if(surpassCount >= 1){
+    if(score > highscore){
         victory = true;
         soundFiles[2].play();
+
+        surpassCount = score - highscore;
+
+        highscore = score;
+        localStorage.setItem("highscore", String(highscore))
     } 
     else {
         victory = false;
