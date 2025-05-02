@@ -238,6 +238,20 @@ function initialize() {
     alignSnake();
     makeSoundPlayers();
     makeMenu(true);
+
+    window.addEventListener("resize", e => {
+        snake = []
+        
+        snakeBoard.innerHTML = "";
+        gameBoard.innerHTML = "";
+
+        buildPixels();
+        makeSnake();
+        alignSnake();
+        
+        
+    
+    })
 }
 
 function start() {
