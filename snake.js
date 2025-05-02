@@ -243,14 +243,12 @@ function initialize() {
         snake = []
         
         snakeBoard.innerHTML = "";
-        gameBoard.innerHTML = "";
-
-        buildPixels();
+        
         makeSnake();
         alignSnake();
-        
-        
-    
+
+        stop();
+        start();
     })
 }
 
