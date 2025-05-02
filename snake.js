@@ -239,7 +239,7 @@ function initialize() {
     makeSoundPlayers();
     makeMenu(true);
 
-    document.addEventListener("resize", e => {
+    window.addEventListener("resize", e => {
         
             pixelWidth = snakeBoard.offsetHeight / boardLen;
             step = pixelWidth / 25;
