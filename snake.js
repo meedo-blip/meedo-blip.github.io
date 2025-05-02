@@ -238,18 +238,6 @@ function initialize() {
     alignSnake();
     makeSoundPlayers();
     makeMenu(true);
-
-    window.addEventListener("resize", e => {
-        
-            pixelWidth = snakeBoard.offsetHeight / boardLen;
-            step = pixelWidth / 25;
-    
-            for(part : snake){
-                part.element.width = pixelWidth;
-                part.element.height = pixelWidth * 0.8;
-            }    
-        }
-    )
 }
 
 function start() {
