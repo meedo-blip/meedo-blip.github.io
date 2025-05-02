@@ -240,15 +240,15 @@ function initialize() {
     makeMenu(true);
 
     window.addEventListener("resize", e => {
-        snake = []
-        
-        snakeBoard.innerHTML = "";
-        
-        makeSnake();
-        alignSnake();
-
-        stop();
-        start();
+        if(playing) {
+            pixelWidth = snakeBoard.offsetHeight / boardLen;
+            step = pixelWidth / 25;
+    
+            for(part : snake){
+                part.element.width = pixelWidth;
+                part.element.height = pixelWidth * 0.8;
+            }    
+        }
     })
 }
 
